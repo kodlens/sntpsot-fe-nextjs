@@ -1,6 +1,6 @@
 import NotFound from "@/components/NotFound";
 import { fetchWithToken } from "@/lib/fetcher";
-import DOMPurify from "isomorphic-dompurify";
+//import DOMPurify from "isomorphic-dompurify";
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: { slug: string } }) {
@@ -82,7 +82,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const article = await fetchWithToken(`/api/articles/fetch-article/${slug}`);
   console.log('main component', article);
 
-  const safeDescription = DOMPurify.sanitize(article.description);
+  //const safeDescription = DOMPurify.sanitize(article.description);
+  const safeDescription =   article.description;
+
 
   try {
 
