@@ -4,10 +4,7 @@ const Page = () => {
   return (
     <>
       <MainHeader />
-
-      
     </>
-    
   )
 }
 
