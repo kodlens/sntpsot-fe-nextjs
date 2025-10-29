@@ -1,6 +1,13 @@
+import MainHeader from "@/components/MainHeader"
+
 const Page = () => {
   return (
-    <div>Page</div>
+    <>
+      <MainHeader />
+
+      
+    </>
+    
   )
 }
 
