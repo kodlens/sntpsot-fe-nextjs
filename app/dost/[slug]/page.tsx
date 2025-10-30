@@ -6,7 +6,11 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const { slug } = await params;
 
-   const res = await fetch(
+  
+    
+  try {
+   
+    const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URI}/api/articles/fetch-article/${slug}`,
       {
         cache: "no-store",
@@ -17,15 +21,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     );
 
     console.log('meta',  res);
-    
-  try {
-   
-
     if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
 
     const article = await res.json();
 
-    console.log('article',  article);
+    //console.log('article',  article);
 
     const description = article.description
       ? article.description.replace(/<[^>]*>?/gm, "").slice(0, 160)

@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
-import {  Plus_Jakarta_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import AppLogo from "@/components/AppLogo";
+import Search from "@/components/Search";
+import MagnifyGlass from "@/components/Magnifying/Magnifying";
+import MenuButton from "@/components/MenuButton";
+import MainFooter from "@/components/Footer/MainFooter";
+import MainHeader from "@/components/MainHeader";
 
 const geistSans = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -30,7 +36,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} antialiased`}
       >
-        {children}
+        
+        <MainHeader />
+
+          {children}
+
+        <MainFooter />
       </body>
     </html>
   );
