@@ -1,90 +1,92 @@
-import axios from 'axios';
+import { Article } from "@/types/article";
+import Link from "next/link";
 
-import '../LatestArticles/index.css';
-import { Link } from 'react-router-dom';
-import type { Article } from '../../types/article';
-import { config } from '../../config/config';
-import { useQuery } from '@tanstack/react-query';
-import ErrorComponent from '../../components/ErrorComponent';
-
-export default function LatestArticles() {
-
-
-    // const loadLatestArticles = ():void => {
-    //     setLoading(true)
-    //     axios.get<Article[]>(`${config.baseUri}/api/articles/load-latest-articles`, {
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Authorization': `Bearer ${config.apiToken}`
-    //         }
-    //     }).then(res=>{
-    //         setLoading(false)
-    //         setArticles(res.data);
-    //     })
-    // }
-
-    const { data, error } = useQuery({
-        queryKey: ['articles'],
-        queryFn: async () => {
-            const res = await axios.get<Article[]>(`${config.baseUri}/api/articles/load-latest-articles`, {
-                headers: {
-                    Accept: 'application/json',
-                    'Authorization': `Bearer ${config.apiToken}`
-                }
-            })
-
-            return res.data
-        }
-
-    })
-
-    if(error){
-        return <ErrorComponent />
+export default async function LatestArticles() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URI}/api/articles/load-latest-articles`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_API_TOKEN}`,
+      },
+      next: { revalidate: 120 },
     }
+  );
 
-    const truncate = (text: string, limit: number) => {
-        if (text.length > 0) {
-            const words = text.split(' ');
-            if (words.length > limit) {
-                return words.slice(0, limit).join(' ') + '...';
-            }
-            return text;
-        } else {
-            return ''
-        }
-    }
+  if (!res.ok) {
+    throw new Error("Error loading latest articles.");
+  }
 
+  const data = await res.json();
 
-    return (
-        <section className='w-full bg-white'>
+  const truncate = (text: string, limit: number) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > limit
+      ? words.slice(0, limit).join(" ") + "..."
+      : text;
+  };
 
-            <div className="font-extrabold text-[2rem] text-center my-20 tracking-wider"></div>
-            <div className='xl:w-7xl mx-auto '>
+  return (
+    <section className="relative py-20 bg-white border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Section Title */}
+        <div className="text-center mb-12">
+          <div className="text-sm uppercase tracking-widest text-red-700 font-semibold mb-2">
+            Discover More
+          </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 tracking-tight">
+            Latest Articles
+          </h2>
+          <p className="text-gray-600 mt-3 max-w-2xl mx-auto text-base md:text-lg">
+            Catch up on the most recent Science & Technology updates, features, and insights from DOST–STII.
+          </p>
+        </div>
 
-                <div className='flex flex-col lg:flex-row flex-wrap gap-[16px] '>
-                    {data?.map((article:Article) => (
+        {/* Articles Grid */}
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+          {data?.map((article: Article) => (
+            <div
+              key={article.id}
+              className="group flex flex-col rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden bg-white"
+            >
+              {/* Image */}
+              <div
+                className="h-56 w-full bg-gray-100 bg-cover bg-center group-hover:scale-[1.02] transition-transform duration-300"
+                style={{
+                  backgroundImage: `url(${process.env.NEXT_PUBLIC_API_BASE_URI}/storage/featured_images/${article.featured_image || "img/no-img.png"})`,
+                }}
+              ></div>
 
-                        <div key={article.id} className='flex flex-col lg:flex-row gap-2 shadow-sm border border-gray mx-2 lg:m-0 lg:w-full lg:p-6 py-4 article rounded-md mb-8'>
-
-                            <div className='w-full h-[200px] lg:w-[300px] lg:h-[200px] md:h-[400px] border-1 border-grey-700' style={{
-                                backgroundImage: `url(${config.baseUri}/storage/featured_images/${article.featured_image})`,
-                                //backgroundImage: `url(${config.storageUri}/${article.featured_image})`,
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center'
-                            }}>
-                            </div>
-
-                            <div className='w-full'>
-                                <div className='font-extrabold text-red-600 text-lg mb-2'>{article.category?.title}</div>
-                                <Link className='text-md font-bold mb-10 text-lg' to={`/dost/${article.slug}`}> {article.title}</Link>
-                                <div className="border border-gray my-2"></div>
-                                <div className='text-justify'>{truncate(article.excerpt ? article.excerpt : '', 15)}</div>
-                            </div>
-                        </div>
-                    ))}
+              {/* Content */}
+              <div className="flex flex-col flex-1 p-6">
+                <div className="text-sm font-semibold text-blue-700 uppercase mb-1 tracking-wide">
+                  {article.category?.title || "Science & Technology"}
                 </div>
-            </div>
 
-        </section>
-    )
+                <Link
+                  href={`/dost/${article.slug}`}
+                  prefetch={false}
+                  className="text-lg font-bold text-gray-900 group-hover:text-red-700 transition-colors line-clamp-2 mb-3"
+                >
+                  {article.title}
+                </Link>
+
+                <p className="text-gray-600 text-sm flex-1 mb-5 leading-relaxed">
+                  {truncate(article.excerpt || "", 25)}
+                </p>
+
+                <Link
+                  href={`/dost/${article.slug}`}
+                  className="inline-flex items-center text-red-700 font-medium text-sm hover:underline"
+                >
+                  Read More →
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

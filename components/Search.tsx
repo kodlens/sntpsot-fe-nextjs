@@ -8,13 +8,6 @@ const Search: React.FC = () => {
     const router = useRouter()
 
     const [search, setSearch] = useState<string>('')
-    //const navigate = useNavigate(); // This should work now
-
-    //const keyParam: string | any | unknown = useParams().search;
-
-    // useEffect(()=> {
-    //     setSearch(keyParam)
-    // }, [])
 
     const handleKeyDown = (event: { key: string }) => {
         if (event.key === 'Enter') {

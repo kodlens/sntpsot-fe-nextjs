@@ -34,7 +34,7 @@ export default function AnimatedFeatured({
       className="relative overflow-hidden rounded-2xl shadow-lg group"
     >
       <div
-        className="h-[400px] w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+        className="h-[420px] w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
         style={{ backgroundImage: `url(${image})` }}
       ></div>
 

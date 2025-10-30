@@ -29,7 +29,6 @@ async function getFeaturedArticles(): Promise<Article[]> {
 }
 
 export default async function FeaturedArticles() {
-  
   const articles = await getFeaturedArticles();
 
   if (!articles || articles.length === 0) return null;
@@ -48,13 +47,13 @@ export default async function FeaturedArticles() {
         background: "linear-gradient(135deg, #e0f2fe 0%, #e0e7ff 100%)",
       }}
     >
-
+      {/* Science & Tech pattern overlay */}
       <div
         className="absolute inset-0 opacity-10 bg-[url('/images/hex-tech.svg')] bg-repeat bg-center"
         aria-hidden="true"
       />
 
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="relative max-w-7xl mx-auto px-4">
         {/* Title and subtitle */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 drop-shadow-sm">
@@ -66,10 +65,15 @@ export default async function FeaturedArticles() {
           </p>
         </div>
 
-        {/* Articles section */}
-        <div className="flex flex-col lg:flex-row gap-8">
+        {/* Section label */}
+        <div className="text-white font-bold bg-red-700 px-4 py-2 w-fit mb-6 shadow-lg rounded-md">
+          Featured Articles
+        </div>
+
+        {/* Articles layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:flex-row gap-6">
           {/* Main featured article */}
-          <div className="flex-1">
+          <div className="">
             <AnimatedFeatured
               image={image(main.featured_image)}
               title={main.title}
@@ -79,18 +83,21 @@ export default async function FeaturedArticles() {
           </div>
 
           {/* Smaller articles */}
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {rest.slice(0, 4).map((item, i) => (
-              <AnimatedArticle
-                key={item.id}
-                image={image(item.featured_image)}
-                title={item.title}
-                slug={item.slug}
-                delay={i * 0.1}
-              />
+              <div key={item.id} className="h-full">
+                <AnimatedArticle
+                  image={image(item.featured_image)}
+                  title={item.title}
+                  slug={item.slug}
+                  delay={i * 0.1}
+                />
+              </div>
             ))}
           </div>
+          
         </div>
+
       </div>
     </section>
   );

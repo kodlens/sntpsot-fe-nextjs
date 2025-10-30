@@ -1,92 +1,77 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Category } from "../../types/category";
 import Copyright from "./Copyright";
 
-
 const MainFooter = async () => {
-
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URI}/api/load-categories`, {
     cache: 'no-store',
     headers: {
       'Content-type': 'application/json',
       Authorization: `Bearer ${process.env.NEXT_API_TOKEN}`
     }
-  })
+  });
 
-  const categories = await res.json()
-
+  const categories = await res.json();
 
   return (
-    <footer className="w-full bg-black-2 px-[23px] py-[30px] lg:p-p100">
-      <div className="w-full">
-        <div className="flex justify-evenly lg:flex-row flex-col">
-          <div className="flex flex-col gap-2">
-            <div className="text-white font-bold mb-5">VISIT US</div>
-            <div className="flex items-center">
-              <img
-                className='mr-2'
-                src={'/socials/icons8-facebook-50.png'}
-                width={23}
-                alt="Footer logo"
-              />
-              <a href="https://www.facebook.com/profile.php?id=61567961533594"
-                target="_blank" rel="noreferrer"
-                className="text-sm text-white">
+    <footer className="w-full bg-black-2 text-white py-12 px-6 lg:px-20">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-10 lg:gap-0">
+
+        {/* Visit & Contact */}
+        <div className="flex flex-col gap-6 lg:w-1/3">
+          <div>
+            <h3 className="font-bold mb-4">VISIT US</h3>
+            <div className="flex items-center gap-2">
+              <Image src="/socials/icons8-facebook-50.png" width={23} height={23} alt="Facebook" />
+              <a
+                href="https://www.facebook.com/profile.php?id=61567961533594"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm hover:text-red-600 transition-colors"
+              >
                 S&T Facebook Page
               </a>
             </div>
+          </div>
 
-
-            {/* add my-5 if socia media site is added */}
-            <div className="text-white font-bold my-5">CONTACT US</div>
-            <div className="flex items-center">
-              <img
-                className='mr-2'
-                src={'/socials/icons8-email-50.png'}
-                width={20}
-                alt="Footer logo"
-              />
-              <a href="/" className="text-sm text-white">
-                {/* email here */}
+          <div>
+            <h3 className="font-bold mb-4">CONTACT US</h3>
+            <div className="flex items-center gap-2">
+              <Image src="/socials/icons8-email-50.png" width={20} height={20} alt="Email" />
+              <a
+                href="mailto:dost.digest@gmail.com"
+                className="text-sm hover:text-red-600 transition-colors"
+              >
                 dost.digest@gmail.com
               </a>
             </div>
           </div>
-
-
-          <div className="lg:mt-0 mt-10">
-
-            <div className="flex flex-col">
-
-              <div className="text-white font-bold mb-5">CATEGORIES</div>
-
-              <div className="flex gap-6">
-                <div className="flex flex-col">
-                  {categories?.slice(0, 8).map((item: Category) => (
-                    <Link prefetch={false} href={`/category/${item.slug}`}
-                      className="text-sm py-2 px-2 text-white hover:text-[1rem] transform ease-in duration-150"
-                      key={item.id}>{item.title}
-                    </Link>
-                  ))}
-                </div>
-
-                <div className="flex flex-col">
-                  {categories?.slice(8).map((item: Category) => (
-                    <Link prefetch={false} href={`/category/${item.slug}`}
-                      className="text-sm px-2 py-2 text-white hover:text-[1rem] transform ease-in duration-150"
-                      key={item.id}>{item.title}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
+        {/* Categories */}
+        <div className="lg:w-2/3">
+          <h3 className="font-bold mb-4">CATEGORIES</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {categories?.map((item: Category) => (
+              <Link
+                key={item.id}
+                prefetch={false}
+                href={`/category/${item.slug}`}
+                className="text-sm hover:text-red-600 transition-colors"
+              >
+                {item.title}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-12 border-t border-gray-700 pt-6">
         <Copyright />
       </div>
     </footer>
-  )
-}
+  );
+};
 
 export default MainFooter;
