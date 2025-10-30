@@ -1,132 +1,96 @@
-import Slider from 'react-slick';
-import './index.css';
-import { Link } from 'react-router-dom';
-import ReactPlayer from 'react-player/youtube'
+import Link from 'next/link';
+import Image from 'next/image';
+import SliderDostv from '@/components/SliderDostv';
 
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import './index.css';
-import { useQuery } from '@tanstack/react-query';
-import axios, { AxiosError } from 'axios';
-import { config } from '../../config/config';
+const DostV = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URI}/api/dostv/load-dostv`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${process.env.NEXT_API_TOKEN}`,
+    },
+    cache: 'no-store',
+  });
 
-interface Video {
-    id?:number;
-    title?: string;
-    description?: string;
-    link: string;
-}
+  const data = await res.json();
 
-interface DostvData {
-    dostv: {
-        title:string;
-        description: string;
-        featured_image: string;
-        website:string;
-        link:string;
-    };
+  if (!res.ok) {
+    throw new Error('Failed to load DOSTv content.');
+  }
 
-    videos: Video[]
-}
+  const featuredImageUrl = data?.dostv?.featured_image
+    ? `${process.env.NEXT_PUBLIC_API_BASE_URI}/storage/dostv/${data.dostv.featured_image}`
+    : '/images/placeholder-magazine.png'; // local fallback in /public
 
-interface ApiErrorResponse {
-    message: string;
-    errors?: Record<string, string[]>
-}
+  return (
+    <section
+      className="relative flex flex-col lg:flex-row items-center justify-center my-20 rounded-2xl overflow-hidden shadow-xl"
+      style={{
+        backgroundImage: `url(/images/dost-v-background.png)`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      {/* Overlay for better contrast */}
+      <div className="absolute inset-0 bg-black/60 z-0" />
 
-const DostV: React.FC = () => {
+      {/* Left Section: Featured Image */}
+      <div className="relative hidden lg:flex lg:w-2/3 justify-center items-center z-10">
+        <div
+          className="absolute inset-0 bg-cover bg-center blur-md opacity-40"
+          style={{ backgroundImage: `url(${featuredImageUrl})` }}
+        />
 
-    const { data, error } = useQuery<DostvData, AxiosError<ApiErrorResponse>>({
-        queryKey: ['dostvs'],
-        queryFn: async (): Promise<DostvData> => {
-            const res = await axios.get<DostvData>(`${config.baseUri}/api/dostv/load-dostv`, {
-                 headers: {
-                    Accept: 'application/json',
-                    'Authorization': `Bearer ${config.apiToken}`
-                }
-            })
+        <div className="relative p-10 max-w-[80%] rounded-xl shadow-lg overflow-hidden">
+          <Image
+            src={featuredImageUrl}
+            alt={data?.dostv?.title ?? 'DOSTv cover'}
+            width={720}            // adjust as needed
+            height={480}           // adjust as needed
+            priority
+            style={{ objectFit: 'cover', width: '100%', height: 'auto' }}
+            // onError isn't reliably supported on server — fallback handled above by choosing local src when missing
+          />
+        </div>
+      </div>
 
-            return res.data
-        }
-    })
+      {/* Right Section: Info + Videos */}
+      <div className="relative z-10 lg:w-1/3 text-center px-6 py-10 lg:py-0">
+        <h2 className="text-3xl lg:text-5xl font-bold text-white mb-4 lg:text-left">
+          DOST<span className="text-blue-400">v</span>
+        </h2>
 
+        <p className="text-white text-sm md:text-base leading-relaxed text-justify mb-6">
+          {data?.dostv?.description}
+        </p>
 
+        {/* Video Slider */}
+        <div className="mx-auto max-w-[320px] mb-8">
+          <SliderDostv data={data} />
+        </div>
 
-    if(error){
-        console.error(error.response?.data.message);
-        console.error(error.response?.data.errors);
-    }
-    
-    const settings = {
-        dots: true,
-        infinite: true,
-        slidesToShow: 1,
-        // slidesToScroll: 1,
-        autoplay: true,
-        speed: 2000,
-        adaptiveHeight: true,
-        autoplaySpeed: 3000
-    }
-
-    return (
-        <section className='md:h-[640px] flex my-20'
-            style={{
-                background: `url(/images/dost-v-background.png)`,
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-            }}>
-            
-            {/* <img className="absolute top-0 w-full" src="/images/dost-v-background.png" alt="" /> */}
-            
-            <div className="lg:w-7xl lg:mx-auto flex">
-                <div className="flex gap-10 items-center justify-center">
-                    {/* Featured Image */}
-                    <div className="hidden relative lg:flex lg:w-2/3">
-                        <div className="absolute inset-0 bg-cover bg-center blur-md"
-                            style={{
-                                background: `url(${config.baseUri}/storage/dostv/${data?.dostv.featured_image})`,
-                                backgroundRepeat: 'no-repeat',
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center'
-                            }}></div>
-
-                        <img className="p-10 mx-auto z-1" src={`/dostv/${data?.dostv.featured_image ?? 'https://fakeimg.pl/600x400/000000/ffffff?text=Image+Placeholder'}`} alt="" />
-                    </div>
-                    
-                    <div className="lg:w-1/3 text-center py-2">
-                        <h2 className="text-2xl font-bold text-white lg:text-[40px] lg:text-left">DOST<span className="text-blue-500">v</span></h2>
-                        <p className="mx-2 text-white my-2 text-justify">{data?.dostv.description}</p>
-                        
-                        <div className="mx-auto max-w-[300px]">
-                            <Slider
-                                className=""
-                                {...settings}>
-                                {data?.videos.map((video) => (
-                                    <div key={video.id}>
-                                        <ReactPlayer
-                                            className="react-player"
-                                            width={360}
-                                            style={{
-
-                                                maxHeight: "240px",
-                                            }}
-                                            url={video.link}
-                                            controls={true} />
-                                    </div>
-                                ))}
-                            </Slider>
-                        </div>
-
-                        <div className="flex lg:flex-row flex-col mx-2 lg:justify-center mt-8 gap-4">
-                            <Link className='text-white font-bold bg-blue-400 px-6 py-3' target="_blank" to={data ? data?.dostv.website : '#'}>Learn More</Link>
-                            <Link className='font-bold text-white px-6 py-3 border-2 border-white lg:mx-0' target="_blank" to={data ? data?.dostv.link : '#'}>Visit Youtube</Link>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    )
-}
+        {/* Buttons */}
+        <div className="flex flex-col lg:flex-row justify-center gap-4">
+          <Link
+            prefetch={false}
+            target="_blank"
+            href={data?.dostv?.website || '#'}
+            className="text-white font-semibold bg-blue-500 hover:bg-blue-600 transition px-6 py-3 rounded-lg shadow-md"
+          >
+            Learn More
+          </Link>
+          <Link
+            prefetch={false}
+            target="_blank"
+            href={data?.dostv?.link || '#'}
+            className="text-white font-semibold border-2 border-white hover:bg-white hover:text-blue-600 transition px-6 py-3 rounded-lg shadow-md"
+          >
+            Visit YouTube
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default DostV;

@@ -1,4 +1,5 @@
 import MainHeader from "@/components/MainHeader"
+import DostV from "@/components/sections/Dostv"
 import FeaturedArticles from "@/components/sections/FeaturedArticles"
 import FeaturedMagazine from "@/components/sections/FeaturedMagazine"
 import LatestArticles from "@/components/sections/LatestArticles"
@@ -18,6 +19,8 @@ const Page = () => {
       <FeaturedMagazine />
 
       <MagazineSlider />
+
+      <DostV />
       
       <LocationMap />
     </>
