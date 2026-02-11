@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
 import Card from "./card";
-import ReactPlayer from 'react-player/youtube'
+import ReactPlayer from 'react-player'
+import Link from "next/link";
 
 
 // interface SectionProps {
@@ -85,13 +86,13 @@ const FeaturedVideos: React.FC = () => {
           <div className="hidden w-full lg:block text-center lg:text-center lg:w-1/3">
             <h2 className="text-title leading-snug text-black font-bold lg:text-40-px">{getBlackTitle(sectionContent.title?.trim() ?? '')} <span className="text-accent4">{getBlueTitle(sectionContent.title?.trim() ?? '')}</span></h2>
             <p className="mt-p25 text-center lg:text-start text-xxs lg:mt-p40 lg:text-xs lg:leading-150-p">{sectionContent.description}</p>
-            <Link className="block mt-p25 py-p10 px-p20 bg-accent3 text-center text-white font-bold text-xs lg:mt-p40" target="_blank" to={sectionContent.button_link ?? '#'}>{sectionContent.button_text}</Link>
+            <Link className="block mt-p25 py-p10 px-p20 bg-accent3 text-center text-white font-bold text-xs lg:mt-p40" target="_blank" href={sectionContent.button_link ?? '#'}>{sectionContent.button_text}</Link>
           </div>
 
           <div className="lg:block w-full lg:ml-p100 min-h-400">
             <ReactPlayer
-              className="react-player !w-full h-full"
-              url={sectionContent.featured_video}
+              className="react-player w-full! h-full"
+              src={sectionContent.featured_video}
               controls={true} />
             <div className="text-title font-bold mt-2 text-center">{sectionContent.description}</div>
           </div>

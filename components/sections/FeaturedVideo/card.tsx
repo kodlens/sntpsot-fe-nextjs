@@ -1,6 +1,5 @@
 import React from "react";
-import ReactPlayer from 'react-player/youtube'
-
+import ReactPlayer from 'react-player'
 
 interface CardProps {
     card: {
@@ -22,8 +21,8 @@ const Card: React.FC<CardProps> = ({ card }: CardProps) => {
             <div className=" h-auto">
                
                 <ReactPlayer
-                    className="react-player !max-w-full !w-full h-[220px]"
-                    url={link}
+                    className="react-player max-w-full! w-full! h-[220px]"
+                    src={link}
                     controls={true} />
             </div>
             {/* Body */}
