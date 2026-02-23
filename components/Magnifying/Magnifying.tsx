@@ -10,12 +10,12 @@ const MagnifyGlass: React.FC = () =>{
         // else
         //     setIsModalOpen(true)
 
-        const div:any = document.getElementById('search');
+        const div:Record<string, unknown> = document.getElementById('search');
         div.classList.toggle(styles.show);
     }
 
     const handleSearch = () => {
-        const search:any = document.getElementById('searchtext');
+        const search:Record<string, unknown> = document.getElementById('searchtext');
         //navigate('/search/' + search.value);
         router.push(`/search/${search.value}`)
         handleModal()

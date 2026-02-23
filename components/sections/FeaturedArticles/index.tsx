@@ -1,5 +1,5 @@
-import AnimatedArticle from "@/components/AnimatedArticles";
-import AnimatedFeatured from "@/components/AnimatedFeatured";
+import Link from "next/link";
+import AnimatedFeatureStory from "./AnimatedFeatureStory";
 
 type Article = {
   id: number;
@@ -16,7 +16,7 @@ async function getFeaturedArticles(): Promise<Article[]> {
       next: { revalidate: 120 },
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.NEXT_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
       },
     }
   );
@@ -30,74 +30,53 @@ async function getFeaturedArticles(): Promise<Article[]> {
 
 export default async function FeaturedArticles() {
   const articles = await getFeaturedArticles();
+  if (!articles?.length) return null;
 
-  if (!articles || articles.length === 0) return null;
-
-  const [main, ...rest] = articles;
+  const [main, second, ...rest] = articles;
+  if (!second) return null;
 
   const image = (img?: string) =>
-    `${process.env.NEXT_PUBLIC_API_BASE_URI}/storage/featured_images/${
-      img || "img/no-img.png"
-    }`;
+    `${process.env.NEXT_PUBLIC_API_BASE_URI}/storage/featured_images/${img || "img/no-img.png"}`;
 
   return (
-    <section
-      className="relative py-16 lg:py-24 text-gray-900 overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, #e0f2fe 0%, #e0e7ff 100%)",
-      }}
-    >
-      {/* Science & Tech pattern overlay */}
-      <div
-        className="absolute inset-0 opacity-10 bg-[url('/images/hex-tech.svg')] bg-repeat bg-center"
-        aria-hidden="true"
-      />
-
-      <div className="relative max-w-7xl mx-auto px-4">
-        {/* Title and subtitle */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 drop-shadow-sm">
-            S&T Updates
-          </h2>
-          <p className="mt-3 text-gray-700 text-base md:text-lg max-w-2xl mx-auto">
-            Stay informed with the latest breakthroughs, innovations, and news
-            in Science and Technology from DOST–STII.
-          </p>
-        </div>
-
-        {/* Section label */}
-        <div className="text-white font-bold bg-red-700 px-4 py-2 w-fit mb-6 shadow-lg rounded-md">
-          Featured Articles
-        </div>
-
-        {/* Articles layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:flex-row gap-6">
-          {/* Main featured article */}
-          <div className="">
-            <AnimatedFeatured
-              image={image(main.featured_image)}
-              title={main.title}
-              excerpt={main.excerpt}
-              slug={main.slug}
-            />
+    <section className="bg-[#02060f] py-16 text-white lg:py-24">
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="mb-10 flex items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#22aae2]">Feature Story</p>
+            <h2 className="mt-3 text-3xl font-extrabold leading-tight md:text-5xl">
+              Stories shaping science and technology
+            </h2>
           </div>
-
-          {/* Smaller articles */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {rest.slice(0, 4).map((item, i) => (
-              <div key={item.id} className="h-full">
-                <AnimatedArticle
-                  image={image(item.featured_image)}
-                  title={item.title}
-                  slug={item.slug}
-                  delay={i * 0.1}
-                />
-              </div>
-            ))}
-          </div>
-          
+          <Link
+            href="/archives"
+            className="hidden rounded-full border border-[#fbb040]/60 px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#fbb040] transition hover:bg-[#fbb040] hover:text-[#08101f] md:inline-flex"
+          >
+            View All
+          </Link>
         </div>
 
+        <AnimatedFeatureStory
+          main={{
+            id: main.id,
+            title: main.title,
+            excerpt: main.excerpt,
+            slug: main.slug,
+            image: image(main.featured_image),
+          }}
+          second={{
+            id: second.id,
+            title: second.title,
+            slug: second.slug,
+            image: image(second.featured_image),
+          }}
+          rest={rest.slice(0, 3).map((item) => ({
+            id: item.id,
+            title: item.title,
+            slug: item.slug,
+            image: image(item.featured_image),
+          }))}
+        />
       </div>
     </section>
   );

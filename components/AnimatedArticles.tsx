@@ -41,7 +41,7 @@ export default function AnimatedArticle({
 
       <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black/80 to-transparent">
         <Link prefetch={false} href={`/dost/${slug}`}>
-          <h3 className="text-white text-lg font-semibold line-clamp-2 group-hover:text-yellow-300 transition-colors">
+          <h3 className="text-white text-lg font-semibold line-clamp-2 transition-colors group-hover:text-[#fbb040]">
             {title}
           </h3>
         </Link>

@@ -31,16 +31,17 @@ export default function AnimatedFeatured({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
-      className="relative overflow-hidden rounded-2xl shadow-lg group"
+      className="group relative overflow-hidden rounded-2xl shadow-lg"
     >
       <div
         className="h-[420px] w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
         style={{ backgroundImage: `url(${image})` }}
       ></div>
 
-      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent p-6 flex flex-col justify-end">
+      <div className="absolute inset-0 bg-linear-to-t from-[#031b37]/90 via-[#031b37]/45 to-transparent p-6 flex flex-col justify-end">
+        <div className="mb-3 h-1 w-16 rounded-full bg-[linear-gradient(90deg,#22aae2_0%,#fbb040_100%)]" />
         <Link prefetch={false} href={`/dost/${slug}`}>
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight">
+          <h2 className="mb-3 text-2xl font-bold leading-tight text-white transition-colors group-hover:text-[#fbb040] md:text-3xl">
             {title}
           </h2>
         </Link>

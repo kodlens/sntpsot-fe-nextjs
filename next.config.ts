@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'http', // use 'https' if your site uses https
-        hostname: 'sntpost.doststii.ph',
+        hostname: 'localhost',
       },
     ],
   },

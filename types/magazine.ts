@@ -10,5 +10,4 @@ export interface Magazine {
     is_featured:number;
     created_at:Date;
     updated_at:Date;
-    data(data: any): unknown;
 }

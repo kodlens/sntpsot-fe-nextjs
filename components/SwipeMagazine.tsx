@@ -11,9 +11,9 @@ export default function SwipeMagazine({ data }: { data: Magazine[] }) {
   const renderSlides = () =>
     data?.map((magazine: Magazine) => (
       <SwiperSlide key={magazine.id}>
-        <Link prefetch={false} href={`/magazines/flipbook/${magazine.slug}`}>
+        <Link prefetch={false} href={`/magazines/flipbook/${magazine.slug}`} className="group block">
           <div
-            className="lg:h-[490px] lg:w-full md:h-[320px] h-[540px] relative bg-gray-100 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group"
+            className="relative h-[520px] overflow-hidden rounded-2xl border border-white/15 bg-slate-100 shadow-xl transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-2xl md:h-[360px] lg:h-[500px]"
             style={{
               backgroundImage: `url(${process.env.NEXT_PUBLIC_API_BASE_URI}/storage/magazines/${magazine.cover})`,
               backgroundSize: "contain",
@@ -21,10 +21,17 @@ export default function SwipeMagazine({ data }: { data: Magazine[] }) {
               backgroundRepeat: "no-repeat",
             }}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-70 transition-opacity rounded-2xl flex items-end p-4">
-              <h3 className="text-white font-semibold text-lg md:text-xl line-clamp-2">
-                {magazine.title}
-              </h3>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#021023]/90 via-[#021023]/35 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-95" />
+
+            <div className="absolute left-4 top-4 rounded-full border border-[#22aae2]/60 bg-[#22aae2]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-[#cff4ff]">
+              {magazine.quarter ? `Q${magazine.quarter}` : "Issue"} {magazine.year || ""}
+            </div>
+
+            <div className="absolute inset-x-0 bottom-0 p-4">
+              <h3 className="line-clamp-2 text-lg font-semibold text-white md:text-xl">{magazine.title}</h3>
+              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#fbb040]">
+                Open Flipbook
+              </p>
             </div>
           </div>
         </Link>
@@ -48,10 +55,11 @@ export default function SwipeMagazine({ data }: { data: Magazine[] }) {
         slideShadows: true,
       }}
       breakpoints={{
-        640: { slidesPerView: 3 },
+        640: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 },
       }}
       modules={[Pagination, EffectCoverflow, Navigation]}
-      className="mySwiper"
+      className="mySwiper [--swiper-navigation-color:#22aae2] [--swiper-navigation-size:26px] [--swiper-pagination-color:#fbb040] [--swiper-pagination-bullet-inactive-color:#64748b]"
     >
       {renderSlides()}
     </Swiper>

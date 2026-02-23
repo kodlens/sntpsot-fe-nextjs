@@ -8,7 +8,7 @@ const MainFooter = async () => {
     cache: 'no-store',
     headers: {
       'Content-type': 'application/json',
-      Authorization: `Bearer ${process.env.NEXT_API_TOKEN}`
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
     }
   });
 
