@@ -1,7 +1,5 @@
 import { Magazine } from "@/types/magazine";
 import Image from "next/image";
-import Link from "next/link";
-
 
 const getBanner = async (): Promise<Magazine | null> => {
   try {
