@@ -27,7 +27,7 @@ export default async function FeaturedMagazine() {
     data?.quarter && data?.year ? `Quarter ${data.quarter}, ${data.year}` : data?.year ? `${data.year}` : "Latest Issue";
 
   return (
-    <section className="relative overflow-hidden bg-[#041225] py-16 text-white lg:py-24">
+    <section id="featured-magazine" className="relative overflow-hidden bg-[#041225] py-16 text-white lg:py-24">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_15%,rgba(34,170,226,.20),transparent_40%),radial-gradient(circle_at_90%_80%,rgba(251,176,64,.15),transparent_35%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(4,18,37,.96)_0%,rgba(4,18,37,.75)_45%,rgba(34,170,226,.12)_100%)]" />
 

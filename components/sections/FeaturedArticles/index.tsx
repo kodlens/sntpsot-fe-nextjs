@@ -39,7 +39,7 @@ export default async function FeaturedArticles() {
     `${process.env.NEXT_PUBLIC_API_BASE_URI}/storage/featured_images/${img || "img/no-img.png"}`;
 
   return (
-    <section className="bg-[#02060f] py-16 text-white lg:py-24">
+    <section id="featured-stories" className="bg-[#02060f] py-16 text-white lg:py-24">
       <div className="mx-auto max-w-7xl px-4">
         <div className="mb-10 flex items-end justify-between gap-4">
           <div>

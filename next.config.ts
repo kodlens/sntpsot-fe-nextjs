@@ -7,8 +7,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'http', // use 'https' if your site uses https
         hostname: 'localhost',
+        port: '8000',
+        pathname: '/storage/**',
       },
     ],
+    dangerouslyAllowLocalIP: true, //remove if in production
   },
   
 };

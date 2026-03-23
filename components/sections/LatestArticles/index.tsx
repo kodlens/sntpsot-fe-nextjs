@@ -29,7 +29,7 @@ export default async function LatestArticles() {
   const [lead, ...rest] = data;
 
   return (
-    <section className="relative overflow-hidden border-t border-slate-200 bg-[#f7fcff] py-16 lg:py-24">
+    <section id="latest-stories" className="relative overflow-hidden border-t border-slate-200 bg-[#f7fcff] py-16 lg:py-24">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(34,170,226,0.12),transparent_40%),radial-gradient(circle_at_85%_80%,rgba(251,176,64,0.12),transparent_38%)]" />
 
       <div className="relative mx-auto max-w-7xl px-4">

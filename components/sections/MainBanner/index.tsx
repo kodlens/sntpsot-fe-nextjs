@@ -31,8 +31,13 @@ const MainBanner = async () => {
     ? `${process.env.NEXT_PUBLIC_API_BASE_URI}/storage/magazines/${banner.cover}`
     : undefined;
 
+  console.log('image url', imageUrl);
+  
   return (
-    <section className="relative isolate flex min-h-screen w-full items-center overflow-hidden bg-[#061a2c]">
+    <section className="relative isolate flex min-h-screen w-full items-center overflow-hidden"
+      style={{
+        background: `url('/images/hero-bg.jpg') center/cover no-repeat`,
+      }}>
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-24 -left-20 h-72 w-72 rounded-full bg-[#22aae2]/35 blur-3xl" />
         <div className="absolute top-[35%] left-[42%] h-64 w-64 rounded-full bg-[#22aae2]/25 blur-3xl" />
@@ -52,38 +57,42 @@ const MainBanner = async () => {
             Fresh science and technology stories, discoveries, and innovation highlights delivered in one place.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/archives"
+            <a
+              href="#featured-stories"
               className="rounded-full bg-[#fbb040] px-7 py-3 text-sm font-bold text-[#08273f] transition hover:bg-[#ffc56f]"
             >
               Explore Stories
-            </Link>
-            <Link
-              href="/"
+            </a>
+            <a
+              href="#latest-stories"
               className="rounded-full border border-[#22aae2]/60 bg-[#22aae2]/10 px-7 py-3 text-sm font-bold text-[#d8f3ff] transition hover:bg-[#22aae2]/20"
             >
               Read Latest
-            </Link>
+            </a>
           </div>
         </div>
 
         <div className="relative w-full max-w-[360px] shrink-0 sm:max-w-[430px] lg:max-w-[470px]">
           <div className="absolute inset-0 translate-x-5 translate-y-5 rounded-2xl border border-[#22aae2]/35 bg-[#22aae2]/10" />
           <div className="relative overflow-hidden rounded-2xl border border-[#22aae2]/45 bg-white/10 p-3 shadow-2xl backdrop-blur-md">
-            {imageUrl ? (
-              <Image
-                src={imageUrl}
-                alt="S&T magazine cover"
-                loading="lazy"
-                width={500}
-                height={500}
-                className="h-[460px] w-full rounded-xl object-cover sm:h-[520px]"
-              />
-            ) : (
-              <div className="flex h-[460px] w-full items-center justify-center rounded-xl bg-black/25 text-sm text-white/80 sm:h-[520px]">
-                Magazine cover
-              </div>
-            )}
+            <a href='#featured-magazine'>
+              {imageUrl ? (
+                <Image
+                  src={imageUrl || "/images/placeholder-magazine.png"}
+                  alt="S&T magazine cover"
+                  loading="lazy"
+                  width={500}
+                  height={500}
+                  className="h-[460px] w-full rounded-xl object-cover sm:h-[520px]"
+                />
+              ) : (
+                <div className="flex h-[460px] w-full items-center justify-center rounded-xl bg-black/25 text-sm text-white/80 sm:h-[520px]">
+                  Magazine cover
+                </div>
+              )}
+
+
+            </a>
           </div>
           <div className="absolute -right-6 -bottom-6 rounded-xl border border-[#fbb040]/60 bg-[#fbb040]/90 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#08273f]">
             Latest Issue
