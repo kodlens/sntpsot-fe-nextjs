@@ -34,7 +34,7 @@ const MainBanner = async () => {
   console.log('image url', imageUrl);
   
   return (
-    <section className="relative isolate flex min-h-screen w-full items-center overflow-hidden"
+    <section className="-mt-24 relative isolate flex min-h-screen w-full items-center overflow-hidden"
       style={{
         background: `url('/images/hero-bg.jpg') center/cover no-repeat`,
       }}>
@@ -72,7 +72,7 @@ const MainBanner = async () => {
           </div>
         </div>
 
-        <div className="relative w-full max-w-[360px] shrink-0 sm:max-w-[430px] lg:max-w-[470px]">
+        <div className="relative w-full max-w-[360px] shrink-0 sm:max-w-[430px] lg:max-w-[470px] float-animation">
           <div className="absolute inset-0 translate-x-5 translate-y-5 rounded-2xl border border-[#22aae2]/35 bg-[#22aae2]/10" />
           <div className="relative overflow-hidden rounded-2xl border border-[#22aae2]/45 bg-white/10 p-3 shadow-2xl backdrop-blur-md">
             <a href='#featured-magazine'>

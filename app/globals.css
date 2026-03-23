@@ -43,3 +43,18 @@ body {
 }
 
 
+
+/* in your global CSS file or Tailwind config */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px); /* move up 10px */
+  }
+}
+
+.float-animation {
+  animation: float 4s ease-in-out infinite;
+}
+
