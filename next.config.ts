@@ -5,13 +5,13 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http', // use 'https' if your site uses https
-        hostname: 'localhost',
-        port: '8000',
+        protocol: 'https', // use 'https' if your site uses https
+        hostname: 'sntpost.doststii.ph',
+        //port: '80',
         pathname: '/storage/**',
       },
     ],
-    dangerouslyAllowLocalIP: true, //remove if in production
+    //dangerouslyAllowLocalIP: true, //remove if in production
   },
   
 };
